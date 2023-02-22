@@ -1,3 +1,5 @@
+using UnityEngine;
+using System;
 
 public class VirtualPet
 {
@@ -15,8 +17,8 @@ public class VirtualPet
     }
     public int Hunger
     {
-        get { return Hunger; }
-        set { Hunger = value; }
+        get { return hunger; }
+        set { hunger = value; }
     }
     public int Happiness
     {
@@ -33,22 +35,42 @@ public class VirtualPet
 
     public void Eat()
     {
-        
-        //assumes you checkid if you CAN give food first
-
-        //give the pet some food
-
+        if (hunger < 10)
+        {
+            //give the pet some food
+            hunger += UnityEngine.Random.Range(2, 5);
+        }
     }
 
     public void Rest()
     {
         //burn some time, then give the pet more enegry, and spend a little food
+        //turn off the buttons for a period of time
+        hunger -= UnityEngine.Random.Range(0, 3);
+        energy += UnityEngine.Random.Range(2, 5);
     }
 
     public void Play()
     {
-        //require food a minimum food amount, and then check if the energy is high enough. 
-        //play should handle only the mathmatical computations, and should call
+        if (hunger > 0 && energy < 10)
+        {
+            //require food a minimum food amount, and then check if the energy is high enough. 
+            //play should handle only the mathmatical computations, and should call
+            happiness += UnityEngine.Random.Range(2, 5);
+            energy -= UnityEngine.Random.Range(2, 5);
+            hunger -= UnityEngine.Random.Range(1, 3);
+        }
+        
+        
+    }
+
+    public int CalculateHappiness(int hunger, int energy, int bonusHappiness)
+    {
+        int maxHappiness = 10;
+
+        int totalNumbers = ((energy + hunger) / 2) + bonusHappiness;
+        if (totalNumbers > maxHappiness) { totalNumbers = maxHappiness; }
+        return totalNumbers;
     }
 }
 //The Pet class cannot inherit from MonoBehaviour and must include at least one constructor,
